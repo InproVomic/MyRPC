@@ -13,6 +13,7 @@
         <module>example-common</module>
         <module>example-provider</module>
         <module>MyRPC-easy</module>
+        <module>MyRPC-core</module>
     </modules>
 
     <properties>

@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.cbb</groupId>
-            <artifactId>MyRPC-easy</artifactId>
+            <artifactId>MyRPC-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
