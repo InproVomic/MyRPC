@@ -1,23 +1,26 @@
 package com.cbb.MyRPC.serializer;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.cbb.MyRPC.RpcApplication;
+import com.cbb.MyRPC.spi.SpiLoader;
 
+/**
+ * @author cbb
+ * 序列化工厂，用于获取序列化器
+ */
 public class SerializerFactory {
-    /**
-     * 序列化映射
-     */
-    private static final Map<String, Serializer> KEY_SERIALIZER_MAP = new HashMap<String,Serializer>(){{
-        put(SerializerKeys.JDK,new JdkSerializer());
-        put(SerializerKeys.JSON,new JsonSerializer());
-        put(SerializerKeys.HESSIAN,new HessianSerializer());
-        put(SerializerKeys.KRYO,new KryoSerializer());
-    }};
-
+    static {
+        SpiLoader.load(Serializer.class);
+    }
     /**
      * 默认序列化
      */
-    private static final Serializer DEFAULT_SERIALIZER = new JdkSerializer();
+    private static final Serializer DEFAULT_SERIALIZER = SpiLoader.getInstance(
+            Serializer.class,
+            RpcApplication.getRpcConfig().getSerializer());
+
+    public static Serializer getDefaultSerializer() {
+        return DEFAULT_SERIALIZER;
+    }
 
     /**
      * 获取实例
@@ -25,7 +28,7 @@ public class SerializerFactory {
      * @param key
      * @return
      */
-    public static Serializer getSerializer(String key){
-        return KEY_SERIALIZER_MAP.getOrDefault(key,DEFAULT_SERIALIZER);
+    public static Serializer getInstance(String key){
+        return SpiLoader.getInstance(Serializer.class, key);
     }
 }

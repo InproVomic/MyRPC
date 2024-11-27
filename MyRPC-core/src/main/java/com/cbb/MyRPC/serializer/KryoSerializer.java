@@ -1,5 +1,7 @@
 package com.cbb.MyRPC.serializer;
 
+import com.cbb.MyRPC.model.RpcRequest;
+import com.cbb.MyRPC.model.RpcResponse;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -19,7 +21,7 @@ public class KryoSerializer implements Serializer {
     public <T> byte[] serialize(T obj) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Output output = new Output(byteArrayOutputStream);
-        KRYO_THREAD_LOCAL.get().writeClassAndObject(output, obj);
+        KRYO_THREAD_LOCAL.get().writeObject(output, obj);
         output.close();
         return byteArrayOutputStream.toByteArray();
     }

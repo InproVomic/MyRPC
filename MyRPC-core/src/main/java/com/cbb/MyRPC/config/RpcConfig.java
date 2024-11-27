@@ -11,7 +11,7 @@ public class RpcConfig {
     // 端口号
     private int serverPort = 8091;
     // 版本号
-    private String version = "1.0";
+    private String version = "2.0";
     // 服务器主机名
     private String host = "localhost";
     // 模拟调用
