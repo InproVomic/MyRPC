@@ -1,5 +1,6 @@
 package com.cbb.MyRPC.config;
 
+import com.cbb.MyRPC.serializer.SerializerKeys;
 import lombok.Data;
 
 // RPC框架配置
@@ -15,5 +16,6 @@ public class RpcConfig {
     private String host = "localhost";
     // 模拟调用
     private boolean mock = false;
-
+    // 序列化器
+    private String serializer = SerializerKeys.JDK;
 }

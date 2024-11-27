@@ -15,5 +15,7 @@ public class EasyConsumerExample {
         } else {
             System.out.println("没有找到该用户");
         }
+        int number = userService.getNumber();
+        System.out.println("number:" + number);
     }
 }
