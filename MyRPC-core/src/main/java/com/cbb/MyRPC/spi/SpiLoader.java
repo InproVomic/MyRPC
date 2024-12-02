@@ -98,7 +98,7 @@ public class SpiLoader {
 
         Class<?> aClass = keyClassMap.get(key);
         String keyClassName = aClass.getName();
-        if(!keyClassName.contains(key)){
+        if(!instanceCache.containsKey(keyClassName)){
             try {
                 instanceCache.put(keyClassName, aClass.newInstance());
             } catch (IllegalAccessException | InstantiationException e) {
