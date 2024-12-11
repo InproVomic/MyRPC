@@ -1,0 +1,3 @@
+roundRobin=com.cbb.MyRPC.loadbalancer.RoundRobinLoadBalancer
+random=com.cbb.MyRPC.loadbalancer.RandomLoadBalancer
+consistentHash=com.cbb.MyRPC.loadbalancer.ConsistentHashLoadBalancer

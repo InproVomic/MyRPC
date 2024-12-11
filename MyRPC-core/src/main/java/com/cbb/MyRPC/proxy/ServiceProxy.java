@@ -1,32 +1,24 @@
 package com.cbb.MyRPC.proxy;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.cbb.MyRPC.RpcApplication;
 import com.cbb.MyRPC.config.RpcConfig;
 import com.cbb.MyRPC.constant.RpcConstant;
+import com.cbb.MyRPC.loadbalancer.LoadBalancer;
+import com.cbb.MyRPC.loadbalancer.LoadBalancerFactory;
 import com.cbb.MyRPC.model.RpcRequest;
 import com.cbb.MyRPC.model.RpcResponse;
 import com.cbb.MyRPC.model.ServiceMetaInfo;
-import com.cbb.MyRPC.protocol.*;
 import com.cbb.MyRPC.registry.Registry;
 import com.cbb.MyRPC.registry.RegistryFactory;
 import com.cbb.MyRPC.serializer.Serializer;
 import com.cbb.MyRPC.serializer.SerializerFactory;
 import com.cbb.MyRPC.server.tcp.VertxTcpClient;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.net.NetClient;
-import io.vertx.core.net.NetSocket;
-
-import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 public class ServiceProxy implements InvocationHandler {
     @Override
@@ -52,9 +44,14 @@ public class ServiceProxy implements InvocationHandler {
             if (CollUtil.isEmpty(serviceMetaInfos)) {
                 throw new RuntimeException("未找到服务");
             }
+            // 获取负载均衡器
+            LoadBalancer loadBalancer = LoadBalancerFactory.getDefaultLoadbalancer();
+            // 将方法名作为作为负载均衡参数
+            Map<String,Object> requestParams = new HashMap<>();
+            requestParams.put(method.getName(), method.getName());
 
             // 从服务信息中获取地址
-            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfos.get(0);
+            ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfos);
             RpcResponse response = VertxTcpClient.doRequest(request, selectedServiceMetaInfo);
             return response.getData();
         }catch (Exception e) {

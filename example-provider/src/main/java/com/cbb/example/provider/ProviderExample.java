@@ -7,7 +7,6 @@ import com.cbb.MyRPC.model.ServiceMetaInfo;
 import com.cbb.MyRPC.registry.LocalRegistry;
 import com.cbb.MyRPC.registry.Registry;
 import com.cbb.MyRPC.registry.RegistryFactory;
-import com.cbb.MyRPC.server.HttpServer;
 import com.cbb.MyRPC.server.tcp.VertxTcpServer;
 import com.cbb.example.common.service.UserService;
 

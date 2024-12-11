@@ -1,5 +1,6 @@
 package com.cbb.MyRPC.config;
 
+import com.cbb.MyRPC.loadbalancer.LoadBalancerKeys;
 import com.cbb.MyRPC.serializer.SerializerKeys;
 import lombok.Data;
 
@@ -20,4 +21,6 @@ public class RpcConfig {
     private String serializer = SerializerKeys.JDK;
     // 注册中心
     private RegistryConfig registryConfig = new RegistryConfig();
+    // 负载均衡器
+    private String loadBalancer = LoadBalancerKeys.CONSISTENT_HASH;
 }
