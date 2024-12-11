@@ -65,10 +65,10 @@ public class EtcdRegistry implements Registry {
     }
 
     @Override
-    public void unRegister(ServiceMetaInfo serviceMetaInfo) {
+    public void unRegister(ServiceMetaInfo serviceMetaInfo) throws ExecutionException, InterruptedException {
         kvClient.delete(ByteSequence.from(
                 ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey(),
-                StandardCharsets.UTF_8));
+                StandardCharsets.UTF_8)).get();
         // 删除本地注册节点 key
         localRegisterNodeKeySet.remove(ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey());
     }
@@ -103,10 +103,8 @@ public class EtcdRegistry implements Registry {
         }
     }
 
-    @Override
-    public void templateDelete() {
-        kvClient.delete(ByteSequence.from("/rpc/com.cbb.example.common.service.UserService:1.0/localhost:8091",
-                StandardCharsets.UTF_8));
+    public String templateGetLocal(){
+        return registryServiceCache.getServiceCache().toString();
     }
 
     @Override

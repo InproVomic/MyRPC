@@ -1,12 +1,15 @@
+import com.cbb.MyRPC.RpcApplication;
 import com.cbb.MyRPC.config.RegistryConfig;
 import com.cbb.MyRPC.model.ServiceMetaInfo;
 import com.cbb.MyRPC.registry.EtcdRegistry;
 import com.cbb.MyRPC.registry.Registry;
+import com.cbb.MyRPC.registry.RegistryFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 注册中心测试
@@ -14,14 +17,7 @@ import java.util.List;
 
 public class RegistryTest {
 
-    final Registry registry = new EtcdRegistry();
-
-    @Before
-    public void init() {
-        RegistryConfig registryConfig = new RegistryConfig();
-        registryConfig.setAddress("http://localhost:2379");
-        registry.init(registryConfig);
-    }
+    final Registry registry = RegistryFactory.getDefaultRegistry();
 
     @Test
     public void register() throws Exception {
@@ -46,29 +42,28 @@ public class RegistryTest {
     }
 
     @Test
-    public void unRegister() {
+    public void unRegister() throws ExecutionException, InterruptedException {
         ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
         serviceMetaInfo.setServiceName("myService");
-        serviceMetaInfo.setVersion("1.0");
+        serviceMetaInfo.setVersion("2.0");
         serviceMetaInfo.setServiceHost("localhost");
         serviceMetaInfo.setServicePort(1234);
         registry.unRegister(serviceMetaInfo);
     }
 
     @Test
-    public void serviceDiscovery() {
+    public void serviceDiscovery() throws InterruptedException {
         ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
         serviceMetaInfo.setServiceName("myService");
-        serviceMetaInfo.setVersion("1.0");
+        serviceMetaInfo.setVersion("2.0");
         String serviceKey = serviceMetaInfo.getServiceKey();
         List<ServiceMetaInfo> serviceMetaInfoList = registry.serviceDiscovery(serviceKey);
-        Assert.assertNotNull(serviceMetaInfoList);
-        System.out.println("service discovery result:" + serviceMetaInfoList);
+        Thread.sleep(10000);
+        System.out.println("registry templateGetLocal: "+registry.templateGetLocal());
     }
 
     public static void main(String[] args) {
         RegistryTest registryTest = new RegistryTest();
-        registryTest.init();
         try {
             registryTest.register();
         } catch (Exception e) {

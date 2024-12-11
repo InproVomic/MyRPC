@@ -30,4 +30,8 @@ public class RegistryServiceCache {
     public void clearCache(String serviceName) {
         this.serviceCache.remove(serviceName);
     }
+
+    public Map<String, List<ServiceMetaInfo>> getServiceCache() {
+        return serviceCache;
+    }
 }

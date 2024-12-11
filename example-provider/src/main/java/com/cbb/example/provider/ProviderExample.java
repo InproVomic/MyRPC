@@ -7,8 +7,8 @@ import com.cbb.MyRPC.model.ServiceMetaInfo;
 import com.cbb.MyRPC.registry.LocalRegistry;
 import com.cbb.MyRPC.registry.Registry;
 import com.cbb.MyRPC.registry.RegistryFactory;
-import com.cbb.MyRPC.service.HttpServer;
-import com.cbb.MyRPC.service.VertxHttpServer;
+import com.cbb.MyRPC.server.HttpServer;
+import com.cbb.MyRPC.server.tcp.VertxTcpServer;
 import com.cbb.example.common.service.UserService;
 
 public class ProviderExample {
@@ -35,7 +35,7 @@ public class ProviderExample {
             throw new RuntimeException(e);
         }
         // 启动 web 服务
-        HttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
     }
 }

@@ -1,4 +1,4 @@
-package com.cbb.MyRPC.service;
+package com.cbb.MyRPC.server;
 
 import io.vertx.core.Vertx;
 

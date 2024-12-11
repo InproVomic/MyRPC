@@ -1,6 +1,6 @@
 package com.cbb.example.provider;
 import com.cbb.MyRPC.registry.LocalRegistry;
-import com.cbb.MyRPC.service.VertxHttpServer;
+import com.cbb.MyRPC.server.VertxHttpServer;
 import com.cbb.example.common.service.UserService;
 
 public class EasyProviderExample {

@@ -20,14 +20,14 @@ public interface Registry {
     /**
      * 注销服务
      */
-    void unRegister(ServiceMetaInfo serviceMetaInfo);
+    void unRegister(ServiceMetaInfo serviceMetaInfo) throws ExecutionException, InterruptedException;
 
+
+    public String templateGetLocal();
     /**
      * 服务发现
      */
     List<ServiceMetaInfo> serviceDiscovery(String serviceKey);
-
-    void templateDelete();
 
     /**
      * 服务销毁
