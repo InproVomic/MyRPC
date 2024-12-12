@@ -1,0 +1,2 @@
+no=com.cbb.MyRPC.fault.retry.NoRetryStrategy
+fixedInterval=com.cbb.MyRPC.fault.retry.FixedIntervalRetryStrategy

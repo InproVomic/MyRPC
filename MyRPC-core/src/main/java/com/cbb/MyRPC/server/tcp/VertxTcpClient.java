@@ -59,6 +59,7 @@ public class VertxTcpClient {
 
                     }else{
                         System.out.println("TCP连接失败");
+                        responseFuture.completeExceptionally(new RuntimeException("TCP连接失败"));
                     }
                 });
 
