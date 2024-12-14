@@ -1,0 +1,4 @@
+failBack=com.cbb.MyRPC.fault.tolerant.FailBackTolerantStrategy
+failFast=com.cbb.MyRPC.fault.tolerant.FailFastTolerantStrategy
+failOver=com.cbb.MyRPC.fault.tolerant.FailOverTolerantStrategy
+failSafe=com.cbb.MyRPC.fault.tolerant.FailSafeTolerantStrategy

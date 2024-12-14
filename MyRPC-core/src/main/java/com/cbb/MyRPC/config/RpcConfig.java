@@ -1,9 +1,9 @@
 package com.cbb.MyRPC.config;
 
-import com.cbb.MyRPC.fault.retry.RetryStrategy;
 import com.cbb.MyRPC.fault.retry.RetryStrategyKeys;
 import com.cbb.MyRPC.loadbalancer.LoadBalancerKeys;
 import com.cbb.MyRPC.serializer.SerializerKeys;
+import com.cbb.MyRPC.fault.tolerant.TolerantStrategyKeys;
 import lombok.Data;
 
 // RPC框架配置
@@ -27,4 +27,6 @@ public class RpcConfig {
     private String loadBalancer = LoadBalancerKeys.CONSISTENT_HASH;
     // 重试策略
     private String retryStrategy = RetryStrategyKeys.NO;
+    // 容错策略
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_SAFE;
 }

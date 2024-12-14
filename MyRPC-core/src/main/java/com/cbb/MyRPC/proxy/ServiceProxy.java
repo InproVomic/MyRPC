@@ -6,6 +6,8 @@ import com.cbb.MyRPC.config.RpcConfig;
 import com.cbb.MyRPC.constant.RpcConstant;
 import com.cbb.MyRPC.fault.retry.RetryStrategy;
 import com.cbb.MyRPC.fault.retry.RetryStrategyFactory;
+import com.cbb.MyRPC.fault.tolerant.TolerantStrategy;
+import com.cbb.MyRPC.fault.tolerant.TolerantStrategyFactory;
 import com.cbb.MyRPC.loadbalancer.LoadBalancer;
 import com.cbb.MyRPC.loadbalancer.LoadBalancerFactory;
 import com.cbb.MyRPC.model.RpcRequest;
@@ -54,10 +56,17 @@ public class ServiceProxy implements InvocationHandler {
 
             // 从服务信息中获取地址
             ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfos);
-            // 使用重试机制
-            RetryStrategy retryStrategy = RetryStrategyFactory.getDefaultRetryStrategy();
-            RpcResponse response = retryStrategy.doRetry(()->
-                    VertxTcpClient.doRequest(request, selectedServiceMetaInfo));
+            RpcResponse response = null;
+            try {
+                // 使用重试机制
+                RetryStrategy retryStrategy = RetryStrategyFactory.getDefaultRetryStrategy();
+                response = retryStrategy.doRetry(() ->
+                        VertxTcpClient.doRequest(request, selectedServiceMetaInfo));
+            }catch (Exception e) {
+                // 容错机制
+                TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getDefaultTolerantStrategy();
+                response = tolerantStrategy.doTolerant(requestParams, e);
+            }
             return response.getData();
         }catch (Exception e) {
             e.printStackTrace();
